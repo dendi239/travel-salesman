@@ -113,10 +113,6 @@ class _MyScaffoldState extends State<MyScaffold> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => {},
-        child: Icon(Icons.add),
-      ),
     );
   }
 }
