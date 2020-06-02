@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_google_maps/flutter_google_maps.dart';
@@ -24,8 +26,8 @@ class MyApp extends StatefulWidget {
 
 class RouteCellWidget extends StatelessWidget {
   final Place place;
-  RouteCellWidget(this.place)
-  : super(key: Key(place.thumbnail));
+
+  RouteCellWidget(this.place) : super(key: Key(place.thumbnail));
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,8 @@ class RouteCellWidget extends StatelessWidget {
         title: Wrap(
           spacing: 10,
           children: [
-            Text(place.thumbnail, style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(place.thumbnail,
+                style: TextStyle(fontWeight: FontWeight.bold)),
             Text(place.name),
           ],
         ),
@@ -53,33 +56,75 @@ class RouteDetailsWidget extends StatelessWidget {
     return ReorderableListView(
       onReorder: route.move,
       children: [
-        for (var c in route.places)
-          RouteCellWidget(c),
+        for (var c in route.places) RouteCellWidget(c),
       ],
     );
   }
 }
 
+class MyScaffold extends StatefulWidget{
+  @override
+  _MyScaffoldState createState() => _MyScaffoldState();
+}
+
+class _MyScaffoldState extends State<MyScaffold>{
+  bool expanded = true;
+  var rightPanelWidth;
+  var buttonWidth;
+  @override
+  Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final width = mediaQuery.size.width;
+    rightPanelWidth = max(width / 4, 228.0);
+    buttonWidth = max(width / 20, 60.0);
+    final height = mediaQuery.size.height;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Maps Sample App'),
+        backgroundColor: Colors.green[700],
+      ),
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          Expanded(child: RouteWidget()),
+          Positioned(
+            right: 0,
+            top: 0,
+            height: height,
+            child: AnimatedContainer(
+              color: Colors.white,
+              duration: const Duration(milliseconds: 200),
+              width: expanded ? rightPanelWidth : 0,
+              child: RouteDetailsWidget(),
+            ),
+          ),
+          Positioned(
+            right: expanded ? rightPanelWidth - buttonWidth / 2 : 0,
+            width: buttonWidth,
+            child: FloatingActionButton(
+              child: Icon(
+                  expanded ? Icons.arrow_forward_ios : Icons.arrow_back_ios),
+              onPressed: () => setState(() {
+                expanded = !expanded;
+              }),
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => {},
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
+
 class _MyAppState extends State<MyApp> {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Maps Sample App'),
-          backgroundColor: Colors.green[700],
-        ),
-        body: Row(
-          children: [
-            Expanded(child: RouteWidget()),
-            Expanded(child: RouteDetailsWidget()),
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => {},
-          child: Icon(Icons.add),
-        ),
-      ),
+        home: MyScaffold(),
     );
   }
 }
