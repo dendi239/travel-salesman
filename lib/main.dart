@@ -62,15 +62,16 @@ class RouteDetailsWidget extends StatelessWidget {
   }
 }
 
-class MyScaffold extends StatefulWidget{
+class MyScaffold extends StatefulWidget {
   @override
   _MyScaffoldState createState() => _MyScaffoldState();
 }
 
-class _MyScaffoldState extends State<MyScaffold>{
+class _MyScaffoldState extends State<MyScaffold> {
   bool expanded = true;
-  var rightPanelWidth;
-  var buttonWidth;
+  double rightPanelWidth;
+  double buttonWidth;
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -78,6 +79,7 @@ class _MyScaffoldState extends State<MyScaffold>{
     rightPanelWidth = max(width / 4, 228.0);
     buttonWidth = max(width / 20, 60.0);
     final height = mediaQuery.size.height;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Maps Sample App'),
@@ -120,11 +122,10 @@ class _MyScaffoldState extends State<MyScaffold>{
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: MyScaffold(),
+      home: MyScaffold(),
     );
   }
 }
