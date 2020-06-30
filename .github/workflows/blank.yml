@@ -26,6 +26,7 @@ jobs:
         flutter-version: '1.19.0-4.2.pre'
         channel: 'beta'
     - run: flutter pub get
+    - run: flutter config --enable-web
     - run: flutter build web
     - name: Deploy 🚀
       uses: JamesIves/github-pages-deploy-action@releases/v3
