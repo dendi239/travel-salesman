@@ -25,6 +25,7 @@ jobs:
       with:
         flutter-version: '1.17.4'
     - run: flutter pub global activate peanut
+    - run: flutter pub get
     - run: flutter pub global run peanut:peanut
 
     # Runs a set of commands using the runners shell
